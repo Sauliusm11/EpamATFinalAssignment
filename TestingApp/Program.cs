@@ -10,8 +10,7 @@ namespace TestingApp
             WebDriver driver = new FirefoxDriver();
             try
             {
-                driver.Navigate().GoToUrl("https://www.saucedemo.com/");
-                UseCase1(driver);
+                UseCase3(driver);
             }
             catch (Exception)
             {
@@ -21,13 +20,13 @@ namespace TestingApp
             {
                 driver.Quit();
             }
-
         }
 
         static void UseCase1(WebDriver driver)
         {
-            LoginPage loginPage = new LoginPage(new FirefoxDriver());
-            loginPage.Maximize().
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.Open().
+                Maximize().
                 FindInputFields().
                 InputCredentials("Name", "Pass").
                 ClearUsername().
@@ -37,8 +36,9 @@ namespace TestingApp
         }
         static void UseCase2(WebDriver driver)
         {
-            LoginPage loginPage = new LoginPage(new FirefoxDriver());
-            loginPage.Maximize().
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.Open().
+                Maximize().
                 FindInputFields().
                 InputCredentials("Name", "Pass").
                 ClearPassword().
@@ -46,5 +46,15 @@ namespace TestingApp
                 CompareError("Password is required");
         }
 
+        static void UseCase3(WebDriver driver)
+        {
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.Open().
+                Maximize().
+                FindInputFields().
+                InputCredentials("standard_user", "secret_sauce").
+                Login().
+                FindTitle();
+        }
     }
 }

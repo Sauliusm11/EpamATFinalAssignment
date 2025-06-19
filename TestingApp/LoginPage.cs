@@ -1,9 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestingApp
 {
@@ -55,18 +50,11 @@ namespace TestingApp
             passwordElement.Clear();
             return this;
         }
-        public LoginPage Login() 
+        public MainPage Login() 
         {
             IWebElement loginButton = driver.FindElement(By.XPath("//input[@id='login-button']"));
             loginButton.Click();
-            return this;
+            return new MainPage(driver);
         }
-
-        public bool CompareError(string expectedError)
-        {
-            IWebElement errorMessage = driver.FindElement(By.XPath("//h3[@data-test='error']"));
-            return errorMessage.Text.Contains(expectedError);
-        }
-
     }
 }

@@ -11,26 +11,7 @@ namespace TestingApp
             try
             {
                 driver.Navigate().GoToUrl("https://www.saucedemo.com/");
-                driver.Manage().Window.Maximize();
-
-                IWebElement userName = driver.FindElement(By.XPath("//input[@placeholder='Username']"));
-                IWebElement password = driver.FindElement(By.XPath("//input[@placeholder='Password']"));
-
-                userName.SendKeys("Name");
-                password.SendKeys("Pass");
-
-                userName.Clear();
-                password.Clear();
-
-                IWebElement loginButton = driver.FindElement(By.XPath("//input[@id='login-button']"));
-                loginButton.Click();
-
-                IWebElement errorMessage = driver.FindElement(By.XPath("//h3[@data-test='error']"));
-                string expectedError = "Username is required";
-                if (errorMessage.Text.Contains(expectedError)) 
-                {
-                    Console.WriteLine("Sucess!");
-                }
+                UseCase1(driver);
             }
             catch (Exception)
             {
@@ -42,5 +23,28 @@ namespace TestingApp
             }
 
         }
+
+        static void UseCase1(WebDriver driver)
+        {
+            LoginPage loginPage = new LoginPage(new FirefoxDriver());
+            loginPage.Maximize().
+                FindInputFields().
+                InputCredentials("Name", "Pass").
+                ClearUsername().
+                ClearPassword().
+                Login().
+                CompareError("Username is required");
+        }
+        static void UseCase2(WebDriver driver)
+        {
+            LoginPage loginPage = new LoginPage(new FirefoxDriver());
+            loginPage.Maximize().
+                FindInputFields().
+                InputCredentials("Name", "Pass").
+                ClearPassword().
+                Login().
+                CompareError("Password is required");
+        }
+
     }
 }

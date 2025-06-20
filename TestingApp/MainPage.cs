@@ -2,7 +2,7 @@
 
 namespace TestingApp
 {
-    internal class MainPage
+    public class MainPage
     {
         protected IWebDriver driver;
         public MainPage(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));

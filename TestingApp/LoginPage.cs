@@ -2,7 +2,7 @@
 
 namespace TestingApp
 {
-    internal class LoginPage
+    public class LoginPage
     {
         private static string Url { get; } = "https://www.saucedemo.com/";
 
@@ -11,7 +11,11 @@ namespace TestingApp
         IWebElement usernameElement;
         IWebElement passwordElement;
 
-        public LoginPage(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
+        public LoginPage(IWebDriver driver)
+        {
+            ArgumentNullException.ThrowIfNull(driver, nameof(driver));
+            this.driver = driver;
+        }
 
         public LoginPage Open()
         {

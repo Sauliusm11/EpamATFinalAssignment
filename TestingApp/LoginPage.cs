@@ -38,6 +38,10 @@ namespace TestingApp
 
         public LoginPage InputCredentials(string username, string password) 
         {
+            ArgumentNullException.ThrowIfNull(username, nameof(username));
+            ArgumentNullException.ThrowIfNull(password, nameof(password));
+            ArgumentNullException.ThrowIfNull(usernameElement, nameof(usernameElement));
+            ArgumentNullException.ThrowIfNull(passwordElement, nameof(passwordElement));
             usernameElement.SendKeys(username);
             passwordElement.SendKeys(password);
             return this;

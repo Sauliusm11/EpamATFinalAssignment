@@ -1,15 +1,13 @@
-﻿using OpenQA.Selenium;
-
-namespace TestingApp
+﻿namespace TestingApp
 {
+    using OpenQA.Selenium;
+
     public class LoginPage
     {
-        private static string Url { get; } = "https://www.saucedemo.com/";
-
         private readonly IWebDriver driver;
 
-        IWebElement usernameElement;
-        IWebElement passwordElement;
+        private IWebElement usernameElement;
+        private IWebElement passwordElement;
 
         public LoginPage(IWebDriver driver)
         {
@@ -17,54 +15,57 @@ namespace TestingApp
             this.driver = driver;
         }
 
+        private static string Url { get; } = "https://www.saucedemo.com/";
+
         public LoginPage Open()
         {
-            driver.Navigate().GoToUrl(Url);
+            this.driver.Navigate().GoToUrl(Url);
             return this;
         }
 
-        public LoginPage Maximize() 
+        public LoginPage Maximize()
         {
-            driver.Manage().Window.Maximize();
+            this.driver.Manage().Window.Maximize();
             return this;
         }
 
         public LoginPage FindInputFields()
         {
-            usernameElement = driver.FindElement(By.XPath("//input[@placeholder='Username']"));
-            passwordElement = driver.FindElement(By.XPath("//input[@placeholder='Password']"));
+            this.usernameElement = this.driver.FindElement(By.XPath("//input[@placeholder='Username']"));
+            this.passwordElement = this.driver.FindElement(By.XPath("//input[@placeholder='Password']"));
             return this;
         }
 
-        public LoginPage InputCredentials(string username, string password) 
+        public LoginPage InputCredentials(string username, string password)
         {
             ArgumentNullException.ThrowIfNull(username, nameof(username));
             ArgumentNullException.ThrowIfNull(password, nameof(password));
-            ArgumentNullException.ThrowIfNull(usernameElement, nameof(usernameElement));
-            ArgumentNullException.ThrowIfNull(passwordElement, nameof(passwordElement));
-            usernameElement.SendKeys(username);
-            passwordElement.SendKeys(password);
+            ArgumentNullException.ThrowIfNull(this.usernameElement, nameof(this.usernameElement));
+            ArgumentNullException.ThrowIfNull(this.passwordElement, nameof(this.passwordElement));
+            this.usernameElement.SendKeys(username);
+            this.passwordElement.SendKeys(password);
             return this;
         }
 
         public LoginPage ClearUsername()
         {
-            ArgumentNullException.ThrowIfNull(usernameElement, nameof(usernameElement));
-            usernameElement.Clear();
+            ArgumentNullException.ThrowIfNull(this.usernameElement, nameof(this.usernameElement));
+            this.usernameElement.Clear();
             return this;
         }
 
-        public LoginPage ClearPassword() 
+        public LoginPage ClearPassword()
         {
-            ArgumentNullException.ThrowIfNull(passwordElement, nameof(passwordElement));
-            passwordElement.Clear();
+            ArgumentNullException.ThrowIfNull(this.passwordElement, nameof(this.passwordElement));
+            this.passwordElement.Clear();
             return this;
         }
-        public MainPage Login() 
+
+        public MainPage Login()
         {
-            IWebElement loginButton = driver.FindElement(By.XPath("//input[@id='login-button']"));
+            IWebElement loginButton = this.driver.FindElement(By.XPath("//input[@id='login-button']"));
             loginButton.Click();
-            return new MainPage(driver);
+            return new MainPage(this.driver);
         }
     }
 }

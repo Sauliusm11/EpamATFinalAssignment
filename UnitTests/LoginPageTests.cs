@@ -1,11 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestingApp;
 
 [assembly: Parallelize]
@@ -25,11 +20,11 @@ namespace UnitTests
         {
             get
             {
-                return new[]
-                {
-            new object[] {new FirefoxDriver() },
-            new object[] {new EdgeDriver() },
-                };
+                return
+                [
+                    [new FirefoxDriver()],
+                    [new EdgeDriver()],
+                ];
             }
         }
 
@@ -76,13 +71,13 @@ namespace UnitTests
         [TestMethod]
         public void LoginPageInputNullUserThrows()
         {
-            IWebDriver driver = new EdgeDriver();
+            EdgeDriver driver = new EdgeDriver();
             LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().FindInputFields().InputCredentials(null, "Pass"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -94,13 +89,13 @@ namespace UnitTests
         [TestMethod]
         public void LoginPageInputNullPassThrows()
         {
-            IWebDriver driver = new FirefoxDriver();
+            FirefoxDriver driver = new FirefoxDriver();
             LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().FindInputFields().InputCredentials("Name", null));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -113,13 +108,13 @@ namespace UnitTests
         [TestMethod]
         public void LoginPageInputNullUserElementThrows()
         {
-            IWebDriver driver = new EdgeDriver();
+            EdgeDriver driver = new EdgeDriver();
             LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().InputCredentials("Name", "Pass"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -131,13 +126,13 @@ namespace UnitTests
         [TestMethod]
         public void LoginPageInputNullPassElementThrows()
         {
-            IWebDriver driver = new FirefoxDriver();
+            FirefoxDriver driver = new FirefoxDriver();
             LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().InputCredentials("Name", "Pass"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -149,13 +144,13 @@ namespace UnitTests
         [TestMethod]
         public void LoginPageClearUsernameThrows()
         {
-            IWebDriver driver = new EdgeDriver();
+            EdgeDriver driver = new EdgeDriver();
             LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().ClearUsername());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -167,13 +162,13 @@ namespace UnitTests
         [TestMethod]
         public void LoginPageClearPasswordThrows()
         {
-            IWebDriver driver = new FirefoxDriver();
+            FirefoxDriver driver = new FirefoxDriver();
             LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().ClearPassword());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

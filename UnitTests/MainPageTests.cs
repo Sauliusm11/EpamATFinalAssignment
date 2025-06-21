@@ -1,10 +1,5 @@
 ﻿using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestingApp;
 
 namespace UnitTests
@@ -21,13 +16,13 @@ namespace UnitTests
         [TestMethod]
         public void MainPageCompareErrorNullMessageThrows()
         {
-            IWebDriver driver = new FirefoxDriver();
+            FirefoxDriver driver = new FirefoxDriver();
             MainPage page = new MainPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.CompareError(null));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

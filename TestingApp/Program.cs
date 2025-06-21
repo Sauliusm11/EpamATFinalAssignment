@@ -1,11 +1,11 @@
-﻿using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium;
-
-namespace TestingApp
+﻿namespace TestingApp
 {
+    using OpenQA.Selenium;
+    using OpenQA.Selenium.Firefox;
+
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             WebDriver driver = new FirefoxDriver();
             try
@@ -17,7 +17,7 @@ namespace TestingApp
             {
                 throw;
             }
-            finally 
+            finally
             {
                 driver.Quit();
             }
@@ -34,6 +34,7 @@ namespace TestingApp
                     Login().
                     CompareError("Username is required");
         }
+
         public static bool UseCase2(LoginPage page)
         {
             return page.Open().

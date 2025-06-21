@@ -49,12 +49,14 @@ namespace TestingApp
 
         public LoginPage ClearUsername()
         {
+            ArgumentNullException.ThrowIfNull(usernameElement, nameof(usernameElement));
             usernameElement.Clear();
             return this;
         }
 
         public LoginPage ClearPassword() 
         {
+            ArgumentNullException.ThrowIfNull(passwordElement, nameof(passwordElement));
             passwordElement.Clear();
             return this;
         }

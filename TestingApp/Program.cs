@@ -3,14 +3,15 @@ using OpenQA.Selenium;
 
 namespace TestingApp
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
             WebDriver driver = new FirefoxDriver();
             try
             {
-                UseCase3(driver);
+                LoginPage page = new LoginPage(driver);
+                UseCase3(page);
             }
             catch (Exception)
             {
@@ -22,39 +23,36 @@ namespace TestingApp
             }
         }
 
-        static void UseCase1(WebDriver driver)
+        public static bool UseCase1(LoginPage page)
         {
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.Open().
-                Maximize().
-                FindInputFields().
-                InputCredentials("Name", "Pass").
-                ClearUsername().
-                ClearPassword().
-                Login().
-                CompareError("Username is required");
+           return page.Open().
+                    Maximize().
+                    FindInputFields().
+                    InputCredentials("Name", "Pass").
+                    ClearUsername().
+                    ClearPassword().
+                    Login().
+                    CompareError("Username is required");
         }
-        static void UseCase2(WebDriver driver)
+        public static bool UseCase2(LoginPage page)
         {
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.Open().
-                Maximize().
-                FindInputFields().
-                InputCredentials("Name", "Pass").
-                ClearPassword().
-                Login().
-                CompareError("Password is required");
+            return page.Open().
+                    Maximize().
+                    FindInputFields().
+                    InputCredentials("Name", "Pass").
+                    ClearPassword().
+                    Login().
+                    CompareError("Password is required");
         }
 
-        static void UseCase3(WebDriver driver)
+        public static bool UseCase3(LoginPage page)
         {
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.Open().
-                Maximize().
-                FindInputFields().
-                InputCredentials("standard_user", "secret_sauce").
-                Login().
-                FindTitle();
+            return page.Open().
+                    Maximize().
+                    FindInputFields().
+                    InputCredentials("standard_user", "secret_sauce").
+                    Login().
+                    FindTitle();
         }
     }
 }

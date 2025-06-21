@@ -182,5 +182,62 @@ namespace UnitTests
                 driver.Quit();
             }
         }
+
+        [TestMethod]
+        [DynamicData(nameof(DriverData))]
+        public void LoginPageUseCase1(IWebDriver driver)
+        {
+            LoginPage page = new LoginPage(driver);
+            try
+            {
+                Assert.IsTrue(Program.UseCase1(page));
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Expected no exception, but got: " + ex.Message);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(DriverData))]
+        public void LoginPageUseCase2(IWebDriver driver)
+        {
+            LoginPage page = new LoginPage(driver);
+            try
+            {
+                Assert.IsTrue(Program.UseCase2(page));
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Expected no exception, but got: " + ex.Message);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(DriverData))]
+        public void LoginPageUseCase3(IWebDriver driver)
+        {
+            LoginPage page = new LoginPage(driver);
+            try
+            {
+                Assert.IsTrue(Program.UseCase3(page));
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Expected no exception, but got: " + ex.Message);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
     }
 }

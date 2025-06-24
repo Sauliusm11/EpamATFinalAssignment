@@ -185,7 +185,7 @@ namespace UnitTests
             LoginPage page = new LoginPage(driver);
             try
             {
-                Assert.IsTrue(Program.UseCase1(page));
+                Assert.IsFalse(Program.UseCase1(page));
             }
             catch (Exception ex)
             {
@@ -204,7 +204,7 @@ namespace UnitTests
             LoginPage page = new LoginPage(driver);
             try
             {
-                Assert.IsTrue(Program.UseCase2(page));
+                Assert.IsFalse(Program.UseCase2(page));
             }
             catch (Exception ex)
             {

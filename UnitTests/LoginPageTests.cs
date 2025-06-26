@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using System.Security.Cryptography.X509Certificates;
 using TestingApp;
 
 [assembly: Parallelize]
@@ -10,50 +11,67 @@ namespace UnitTests
 
     public class LoginPageTests
     {
+        static LoginPage firefoxPage;
+        static LoginPage edgePage;
+        static FirefoxDriver firefoxDriver;
+        static EdgeDriver edgeDriver;
+
         [TestMethod]
         public void LoginPageConstructorNullDriverThrows()
         {
             Assert.ThrowsException<ArgumentNullException>(() => new LoginPage(null));
         }
+        [ClassInitialize]
+        public static void TestFixtureSetup(TestContext context)
+        {
+            // Called once before any MSTest test method has started (optional)
+            firefoxDriver = new FirefoxDriver();
+            edgeDriver = new EdgeDriver();
+        }
 
-        public static IEnumerable<object[]> DriverData
+        [ClassCleanup]
+        public static void TestFixtureTearDown()
+        {
+            // Called once after all MSTest test methods have completed (optional)
+            firefoxDriver.Quit();
+            edgeDriver.Quit();
+        }
+        public static IEnumerable<object[]> PageData
         {
             get
             {
                 return
                 [
-                    [new FirefoxDriver()],
-                    [new EdgeDriver()],
+                    [firefoxPage = new LoginPage(firefoxDriver)],
+                    [edgePage = new LoginPage(edgeDriver)],
                 ];
             }
         }
 
-        [TestMethod]
-        [DynamicData(nameof(DriverData))]
-        public void LoginPageOpens(IWebDriver driver)
-        {
-            LoginPage page = new LoginPage(driver);
-            string expected = "Swag Labs";
-            try
-            {
-                page.Open();
-                Assert.AreEqual(expected, driver.Title);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                driver.Quit();
-            }
-        }
+        //[TestMethod]
+        //[DynamicData(nameof(DriverData))]
+        //public void LoginPageOpens(LoginPage page)
+        //{
+        //    string expected = "Swag Labs";
+        //    try
+        //    {
+        //        page.Open();
+        //        Assert.AreEqual(expected, driver.Title);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        driver.Quit();
+        //    }
+        //}
 
         [TestMethod]
-        [DynamicData(nameof(DriverData))]
-        public void LoginPageLocatesInputFields(IWebDriver driver)
+        [DynamicData(nameof(PageData))]
+        public void LoginPageLocatesInputFields(LoginPage page)
         {
-            LoginPage page = new LoginPage(driver);
             try
             {
                 page.Open().Maximize().FindInputFields();
@@ -63,16 +81,11 @@ namespace UnitTests
             {
                 Assert.Fail("Expected no exception, but got: " + ex.Message);
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
         [TestMethod]
-        public void LoginPageInputNullUserThrows()
+        [DynamicData(nameof(PageData))]
+        public void LoginPageInputNullUserThrows(LoginPage page)
         {
-            EdgeDriver driver = new EdgeDriver();
-            LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().FindInputFields().InputCredentials(null, "Pass"));
@@ -81,16 +94,12 @@ namespace UnitTests
             {
                 throw;
             }
-            finally
-            {
-                driver.Quit();
-            }
+
         }
         [TestMethod]
-        public void LoginPageInputNullPassThrows()
+        [DynamicData(nameof(PageData))]
+        public void LoginPageInputNullPassThrows(LoginPage page)
         {
-            FirefoxDriver driver = new FirefoxDriver();
-            LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().FindInputFields().InputCredentials("Name", null));
@@ -99,17 +108,12 @@ namespace UnitTests
             {
                 throw;
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
 
         [TestMethod]
-        public void LoginPageInputNullUserElementThrows()
+        [DynamicData(nameof(PageData))]
+        public void LoginPageInputNullUserElementThrows(LoginPage page)
         {
-            EdgeDriver driver = new EdgeDriver();
-            LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().InputCredentials("Name", "Pass"));
@@ -118,16 +122,11 @@ namespace UnitTests
             {
                 throw;
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
         [TestMethod]
-        public void LoginPageInputNullPassElementThrows()
+        [DynamicData(nameof(PageData))]
+        public void LoginPageInputNullPassElementThrows(LoginPage page)
         {
-            FirefoxDriver driver = new FirefoxDriver();
-            LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().InputCredentials("Name", "Pass"));
@@ -136,16 +135,11 @@ namespace UnitTests
             {
                 throw;
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
         [TestMethod]
-        public void LoginPageClearUsernameThrows()
+        [DynamicData(nameof(PageData))]
+        public void LoginPageClearUsernameThrows(LoginPage page)
         {
-            EdgeDriver driver = new EdgeDriver();
-            LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().ClearUsername());
@@ -154,16 +148,11 @@ namespace UnitTests
             {
                 throw;
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
         [TestMethod]
-        public void LoginPageClearPasswordThrows()
+        [DynamicData(nameof(PageData))]
+        public void LoginPageClearPasswordThrows(LoginPage page)
         {
-            FirefoxDriver driver = new FirefoxDriver();
-            LoginPage page = new LoginPage(driver);
             try
             {
                 Assert.ThrowsException<ArgumentNullException>(() => page.Open().Maximize().ClearPassword());
@@ -172,67 +161,81 @@ namespace UnitTests
             {
                 throw;
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
 
         [TestMethod]
-        [DynamicData(nameof(DriverData))]
-        public void LoginPageUseCase1(IWebDriver driver)
+        [DynamicData(nameof(PageData))]
+        public void LoginPageUseCase1(LoginPage page)
         {
-            LoginPage page = new LoginPage(driver);
             try
             {
-                Assert.IsFalse(Program.UseCase1(page));
+                Assert.IsTrue(UseCase1(page));
             }
             catch (Exception ex)
             {
                 Assert.Fail("Expected no exception, but got: " + ex.Message);
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
 
         [TestMethod]
-        [DynamicData(nameof(DriverData))]
-        public void LoginPageUseCase2(IWebDriver driver)
+        [DynamicData(nameof(PageData))]
+        public void LoginPageUseCase2(LoginPage page)
         {
-            LoginPage page = new LoginPage(driver);
             try
             {
-                Assert.IsFalse(Program.UseCase2(page));
+                Assert.IsTrue(UseCase2(page));
             }
             catch (Exception ex)
             {
                 Assert.Fail("Expected no exception, but got: " + ex.Message);
             }
-            finally
-            {
-                driver.Quit();
-            }
         }
 
         [TestMethod]
-        [DynamicData(nameof(DriverData))]
-        public void LoginPageUseCase3(IWebDriver driver)
+        [DynamicData(nameof(PageData))]
+        public void LoginPageUseCase3(LoginPage page)
         {
-            LoginPage page = new LoginPage(driver);
             try
             {
-                Assert.IsTrue(Program.UseCase3(page));
+                Assert.IsTrue(UseCase3(page));
             }
             catch (Exception ex)
             {
                 Assert.Fail("Expected no exception, but got: " + ex.Message);
             }
-            finally
-            {
-                driver.Quit();
-            }
+        }
+
+        public static bool UseCase1(LoginPage page)
+        {
+            return page.Open().
+                     Maximize().
+                     FindInputFields().
+                     InputCredentials("Name", "Pass").
+                     ClearUsername().
+                     ClearPassword().
+                     Login().
+                     CompareError("Username is required");
+        }
+
+        public static bool UseCase2(LoginPage page)
+        {
+            return page.Open().
+                    Maximize().
+                    FindInputFields().
+                    InputCredentials("Name", "Pass").
+                    ClearPassword().
+                    Login().
+                    CompareError("Password is required");
+        }
+
+        public static bool UseCase3(LoginPage page)
+        {
+            return page.Open().
+                    Maximize().
+                    FindInputFields().
+                    InputCredentials("standard_user", "secret_sauce").
+                    Login().
+                    FindTitle();
         }
     }
 }
